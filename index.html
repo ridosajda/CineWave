@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CineWave | Nonton, Upload & Review Film Favorit</title>
+  <meta name="description" content="Platform streaming dan komunitas film modern. Nonton film berkualitas, upload karya sendiri, beri rating, dan diskusikan review bersama sesama pecinta film.">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Ambient Glow -->
+  <div class="ambient-glow glow-top"></div>
+  <div class="ambient-glow glow-bottom"></div>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="mainNavbar">
+    <div class="nav-container">
+      <div class="nav-brand" id="brandLogo">
+        <div class="logo-icon"><i class="fa-solid fa-play"></i></div>
+        <span class="logo-text">Cine<span>Wave</span></span>
+      </div>
+
+      <nav class="nav-links">
+        <a href="#heroSection" class="nav-item active"><i class="fa-solid fa-compass"></i> Beranda</a>
+        <a href="#catalogSection" class="nav-item"><i class="fa-solid fa-film"></i> Jelajah Film</a>
+        <a href="#watchlistSection" class="nav-item" id="watchlistNavBtn">
+          <i class="fa-solid fa-bookmark"></i> Watchlist
+          <span class="badge" id="watchlistCount">0</span>
+        </a>
+      </nav>
+
+      <div class="nav-actions">
+        <!-- Search Box -->
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="text" id="searchInput" placeholder="Cari judul, genre, aktor..." autocomplete="off">
+          <button class="clear-search-btn" id="clearSearchBtn" style="display:none;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <!-- Upload Movie Trigger Button -->
+        <button class="btn btn-primary" id="openUploadModalBtn">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span>Upload Film</span>
+        </button>
+
+        <!-- User Profile Avatar -->
+        <div class="user-avatar" title="Akun Pengguna">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Avatar">
+          <span class="online-indicator"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO FEATURED SECTION -->
+    <section class="hero-section" id="heroSection">
+      <div class="hero-backdrop" id="heroBackdrop"></div>
+      <div class="hero-overlay"></div>
+      
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          <i class="fa-solid fa-fire"></i> Sedang Tren Hari Ini #1
+        </div>
+        <h1 class="hero-title" id="heroTitle">Cyberpunk: Neon Horizon</h1>
+        
+        <div class="hero-meta">
+          <span class="rating-badge"><i class="fa-solid fa-star"></i> <strong id="heroRating">4.9</strong>/5.0</span>
+          <span class="meta-item"><i class="fa-solid fa-calendar"></i> 2025</span>
+          <span class="meta-item"><i class="fa-solid fa-clock"></i> 2j 14m</span>
+          <span class="quality-tag">4K Ultra HD</span>
+          <span class="age-tag">17+</span>
+        </div>
+
+        <p class="hero-desc" id="heroDesc">
+          Di metropolis megastruktur masa depan di mana ingatan manusia dapat diperjualbelikan, seorang detektif cybernetics terpaksa membongkar konspirasi digital yang mengancam kepunahan kesadaran manusia.
+        </p>
+
+        <div class="hero-genres" id="heroGenres">
+          <span class="genre-pill">Sci-Fi</span>
+          <span class="genre-pill">Cyberpunk</span>
+          <span class="genre-pill">Action</span>
+        </div>
+
+        <div class="hero-cta-group">
+          <button class="btn btn-hero-play" id="heroPlayBtn">
+            <i class="fa-solid fa-play"></i> Putar Film Sekarang
+          </button>
+          <button class="btn btn-hero-secondary" id="heroWatchlistBtn">
+            <i class="fa-regular fa-bookmark"></i> Tambah ke Watchlist
+          </button>
+          <button class="btn btn-hero-icon" id="heroInfoBtn" title="Detail Lengkap">
+            <i class="fa-solid fa-circle-info"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CINEMA PLAYER OVERLAY (HIDDEN FROM HOMEPAGE, OPENS ONLY ON PLAY) -->
+    <div class="cinema-modal-overlay" id="cinemaModal">
+      <div class="cinema-sticky-nav">
+        <button class="btn btn-secondary btn-sm" id="closeCinemaBtn">
+          <i class="fa-solid fa-arrow-left"></i> Kembali ke Beranda
+        </button>
+        <div class="cinema-nav-title" id="cinemaNavTitle">
+          <i class="fa-solid fa-play"></i> Cyberpunk: Neon Horizon
+        </div>
+        <button class="modal-close-btn" id="closeCinemaCrossBtn" title="Tutup Pemutar">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <div class="cinema-modal-body">
+        <section class="player-container-section" id="playerSection">
+          <div class="section-header-compact">
+            <div>
+              <span class="sub-label"><i class="fa-solid fa-tv"></i> Theater Mode</span>
+              <h2 class="section-title" id="nowPlayingTitle">Sedang Ditonton: Cyberpunk: Neon Horizon</h2>
+            </div>
+            <div class="player-quick-tools">
+              <button class="btn-icon-soft" id="theaterToggleBtn" title="Toggle Theater Mode">
+                <i class="fa-solid fa-expand"></i>
+              </button>
+            </div>
+          </div>
+
+      <div class="cinema-stage">
+        <!-- Interactive HTML5 Video Player -->
+        <div class="video-player-wrapper" id="videoWrapper">
+          <video id="mainVideoPlayer" poster="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=1600&q=80">
+            <source id="videoSource" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+            Browser kamu tidak mendukung pemutaran video HTML5.
+          </video>
+
+          <!-- Custom Player Controls Bar -->
+          <div class="custom-video-controls" id="customControls">
+            <div class="progress-bar-container" id="progressBarContainer">
+              <div class="progress-bar-hover" id="progressBarHover"></div>
+              <div class="progress-bar-fill" id="progressBarFill"></div>
+              <div class="progress-scrubber" id="progressScrubber"></div>
+            </div>
+
+            <div class="controls-row">
+              <div class="controls-left">
+                <button class="ctrl-btn" id="playPauseBtn" title="Putar/Jeda (Spasi)">
+                  <i class="fa-solid fa-play"></i>
+                </button>
+                <button class="ctrl-btn" id="rewindBtn" title="Mundur 10 detik">
+                  <i class="fa-solid fa-rotate-left"></i>
+                </button>
+                <button class="ctrl-btn" id="forwardBtn" title="Maju 10 detik">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                
+                <div class="volume-group">
+                  <button class="ctrl-btn" id="muteBtn" title="Mute/Unmute">
+                    <i class="fa-solid fa-volume-high"></i>
+                  </button>
+                  <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.8">
+                </div>
+
+                <div class="time-display">
+                  <span id="currentTime">00:00</span> / <span id="durationTime">00:00</span>
+                </div>
+              </div>
+
+              <div class="controls-right">
+                <!-- Speed selection dropdown -->
+                <div class="dropdown-wrapper">
+                  <button class="ctrl-btn text-btn" id="speedBtn">1.0x</button>
+                  <div class="dropdown-menu" id="speedMenu">
+                    <button class="dropdown-item" data-speed="0.5">0.5x</button>
+                    <button class="dropdown-item" data-speed="0.75">0.75x</button>
+                    <button class="dropdown-item active" data-speed="1.0">1.0x (Normal)</button>
+                    <button class="dropdown-item" data-speed="1.25">1.25x</button>
+                    <button class="dropdown-item" data-speed="1.5">1.5x</button>
+                    <button class="dropdown-item" data-speed="2.0">2.0x</button>
+                  </div>
+                </div>
+
+                <!-- Subtitle toggle -->
+                <button class="ctrl-btn" id="subtitleBtn" title="Subtitle / Teks (ID)">
+                  <i class="fa-solid fa-closed-captioning"></i>
+                </button>
+
+                <!-- Fullscreen -->
+                <button class="ctrl-btn" id="fullscreenBtn" title="Layar Penuh (F)">
+                  <i class="fa-solid fa-expand"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MOVIE DETAILS & COMMUNITY FEED TABS -->
+      <div class="movie-interactive-hub">
+        <div class="hub-main-column">
+          <!-- Overview Card -->
+          <div class="card glass-card info-card">
+            <div class="info-header">
+              <div>
+                <h3 class="active-movie-title" id="playerMovieTitle">Cyberpunk: Neon Horizon</h3>
+                <div class="active-movie-tags" id="playerMovieTags">
+                  <span class="genre-pill">Sci-Fi</span>
+                  <span class="genre-pill">Cyberpunk</span>
+                  <span class="meta-dot">•</span>
+                  <span>2025</span>
+                  <span class="meta-dot">•</span>
+                  <span>134 Menit</span>
+                </div>
+              </div>
+              <div class="action-buttons-group">
+                <button class="btn btn-secondary" id="activeWatchlistBtn">
+                  <i class="fa-regular fa-bookmark"></i> <span>Simpan</span>
+                </button>
+                <button class="btn btn-secondary" id="shareBtn">
+                  <i class="fa-solid fa-share-nodes"></i> Bagikan
+                </button>
+              </div>
+            </div>
+
+            <p class="active-movie-synopsis" id="playerMovieSynopsis">
+              Di metropolis megastruktur masa depan di mana ingatan manusia dapat diperjualbelikan, seorang detektif cybernetics terpaksa membongkar konspirasi digital yang mengancam kepunahan kesadaran manusia.
+            </p>
+
+            <div class="movie-credits-grid">
+              <div class="credit-item">
+                <span class="credit-label">Sutradara:</span>
+                <span class="credit-val" id="playerDirector">Aris Thorne</span>
+              </div>
+              <div class="credit-item">
+                <span class="credit-label">Pemeran:</span>
+                <span class="credit-val" id="playerCast">Elena Rostova, Jax Vance, Kenji Sato</span>
+              </div>
+              <div class="credit-item">
+                <span class="credit-label">Di-upload oleh:</span>
+                <span class="credit-val highlight-val" id="playerUploader"><i class="fa-solid fa-circle-check"></i> NeoStudio Productions</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- RATING & COMMENT COMMUNITY SECTION -->
+          <div class="card glass-card community-card">
+            <div class="community-header">
+              <div class="tab-title">
+                <i class="fa-solid fa-comments"></i> Ulasan & Komunitas
+                <span class="comment-count-badge" id="commentCountBadge">(3 Ulasan)</span>
+              </div>
+              
+              <!-- Interactive Live Rating Summary -->
+              <div class="rating-overview-box">
+                <div class="big-score" id="averageScoreText">4.8</div>
+                <div class="stars-display">
+                  <div class="star-icons" id="scoreStarsVisual">
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star"></i>
+                    <i class="fa-solid fa-star-half-stroke"></i>
+                  </div>
+                  <span class="total-ratings-count" id="totalVotesText">Berdasarkan 128 voting penonton</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- GIVE RATING & WRITE COMMENT FORM -->
+            <div class="review-compose-box">
+              <div class="compose-header">
+                <span class="form-title">Tulis Ulasan & Beri Rating:</span>
+                
+                <!-- Interactive Star Selector -->
+                <div class="star-rating-selector" id="userStarSelector">
+                  <span class="rate-hint" id="rateHint">Klik bintang:</span>
+                  <div class="stars-row">
+                    <i class="fa-regular fa-star star-btn" data-value="1"></i>
+                    <i class="fa-regular fa-star star-btn" data-value="2"></i>
+                    <i class="fa-regular fa-star star-btn" data-value="3"></i>
+                    <i class="fa-regular fa-star star-btn" data-value="4"></i>
+                    <i class="fa-regular fa-star star-btn" data-value="5"></i>
+                  </div>
+                  <span class="selected-rating-num" id="selectedStarValue">0 / 5</span>
+                </div>
+              </div>
+
+              <div class="input-comment-wrapper">
+                <textarea id="commentTextInput" rows="3" placeholder="Bagikan pendapat kamu tentang film ini... (Apakah jalan ceritanya menarik, aktingnya bagus, atau visual efeknya memukau?)"></textarea>
+                
+                <div class="comment-extra-bar">
+                  <label class="spoiler-checkbox-label">
+                    <input type="checkbox" id="isSpoilerCheck">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Mengandung Spoiler (Sembunyikan teks)
+                  </label>
+
+                  <button class="btn btn-primary btn-submit-comment" id="submitCommentBtn">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Ulasan
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- COMMENTS LIST FEED -->
+            <div class="comments-feed-container">
+              <div class="feed-filters">
+                <span class="feed-filter-title">Diskusi Penonton:</span>
+                <div class="filter-pill-group">
+                  <button class="filter-chip active" id="sortNewestComments">Terbaru</button>
+                  <button class="filter-chip" id="sortTopComments">Rating Tertinggi</button>
+                </div>
+              </div>
+
+              <div class="comments-list" id="commentsListContainer">
+                <!-- Dynamically populated by JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SIDEBAR: UP NEXT & SIMILAR MOVIES -->
+        <aside class="hub-sidebar-column">
+          <div class="card glass-card sidebar-card">
+            <h4 class="sidebar-title"><i class="fa-solid fa-forward"></i> Film Rekomendasi Terkait</h4>
+            <div class="sidebar-movie-list" id="sidebarRecommendList">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </div>
+</div>
+
+    <!-- MOVIE CATALOG & EXPLORER SECTION -->
+    <section class="catalog-section" id="catalogSection">
+      <div class="section-top-bar">
+        <div>
+          <span class="sub-label"><i class="fa-solid fa-clapperboard"></i> Arsip Sinema</span>
+          <h2 class="section-title">Jelajahi Semua Koleksi Film</h2>
+        </div>
+
+        <!-- Category & Filter Bar -->
+        <div class="catalog-filters">
+          <div class="genre-filter-scroll" id="genreFilterBar">
+            <button class="filter-chip active" data-genre="all">Semua Film</button>
+            <button class="filter-chip" data-genre="Sci-Fi">Sci-Fi</button>
+            <button class="filter-chip" data-genre="Action">Action</button>
+            <button class="filter-chip" data-genre="Drama">Drama</button>
+            <button class="filter-chip" data-genre="Animation">Animation</button>
+            <button class="filter-chip" data-genre="Cyberpunk">Cyberpunk</button>
+            <button class="filter-chip" data-genre="Fantasy">Fantasy</button>
+          </div>
+
+          <div class="sort-selector">
+            <select id="sortSelect" class="custom-select">
+              <option value="popular">Paling Populer</option>
+              <option value="highest">Rating Tertinggi</option>
+              <option value="newest">Terbaru Diunggah</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Movie Grid -->
+      <div class="movie-grid" id="movieGrid">
+        <!-- Rendered dynamically by JavaScript -->
+      </div>
+    </section>
+
+    <!-- WATCHLIST SECTION DRAWER/VIEW -->
+    <section class="watchlist-section" id="watchlistSection">
+      <div class="section-top-bar">
+        <div>
+          <span class="sub-label"><i class="fa-solid fa-heart"></i> Koleksi Pribadi</span>
+          <h2 class="section-title">Daftar Tontonan Saya (Watchlist)</h2>
+        </div>
+        <button class="btn btn-secondary btn-sm" id="clearWatchlistBtn">
+          <i class="fa-solid fa-trash-can"></i> Kosongkan Watchlist
+        </button>
+      </div>
+
+      <div class="watchlist-grid" id="watchlistGrid">
+        <!-- Populated via JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <div class="logo-icon"><i class="fa-solid fa-play"></i></div>
+        <span class="logo-text">Cine<span>Wave</span></span>
+        <p class="footer-tagline">Solusi modern menonton, mengunggah karya indie, dan berbagi rating review sinema favoritmu.</p>
+      </div>
+      <div class="footer-links">
+        <div class="link-group">
+          <h5>Fitur Utama</h5>
+          <a href="#heroSection">Streaming Video HD</a>
+          <a href="#openUploadModalBtn" onclick="document.getElementById('openUploadModalBtn').click()">Upload Karya Film</a>
+          <a href="#playerSection">Sistem Rating & Ulasan</a>
+          <a href="#watchlistSection">Daftar Watchlist</a>
+        </div>
+        <div class="link-group">
+          <h5>Kategori Populer</h5>
+          <a href="#catalogSection">Sci-Fi & Cyberpunk</a>
+          <a href="#catalogSection">Action Blockbuster</a>
+          <a href="#catalogSection">Animation 3D</a>
+          <a href="#catalogSection">Film Pendek Indie</a>
+        </div>
+        <div class="link-group">
+          <h5>Komunitas & Legalitas</h5>
+          <a href="#">Panduan Komunitas</a>
+          <a href="#">Kebijakan Hak Cipta</a>
+          <a href="#">Ketentuan Layanan</a>
+          <a href="#">Kontak Kami</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 CineWave Platform. Dibuat dengan cinta untuk para penikmat film.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL: UPLOAD NEW MOVIE -->
+  <div class="modal-backdrop" id="uploadModal">
+    <div class="modal-dialog glass-card modal-lg">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-icon-badge"><i class="fa-solid fa-cloud-arrow-up"></i></div>
+          <div>
+            <h3 class="modal-title">Upload Film Baru</h3>
+            <p class="modal-sub">Bagikan karya film, trailer, atau video kamu ke komunitas CineWave</p>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeUploadModalBtn"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="uploadMovieForm" class="modal-body">
+        <div class="form-grid">
+          <!-- Left: Local File Upload Drop Area & Poster Selection -->
+          <div class="form-column">
+            <div class="form-group">
+              <label class="form-label">Berkas Video Film (Lokal) <span class="required">*</span></label>
+              <div class="drop-zone" id="videoDropZone">
+                <i class="fa-solid fa-file-video drop-icon"></i>
+                <div class="drop-title">Pilih / Drag & Drop Berkas Video</div>
+                <div class="drop-hint">Mendukung MP4, WebM, MKV (100% diputar di browser lokal)</div>
+                <input type="file" id="videoFileInput" accept="video/mp4,video/webm,video/ogg,video/quicktime,video/x-matroska" class="file-input-hidden">
+                <div class="file-chosen-name" id="chosenVideoName">Belum ada file dipilih</div>
+                <div class="video-meta-badge" id="videoMetaBadge" style="display:none;"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="poster-toggle-header">
+                <label class="form-label">Poster / Sampul Film</label>
+                <div class="poster-source-tabs">
+                  <button type="button" class="tab-btn active" id="tabAutoThumb">Auto Frame</button>
+                  <button type="button" class="tab-btn" id="tabLocalImg">Upload Gambar</button>
+                  <button type="button" class="tab-btn" id="tabUrlImg">Link URL</button>
+                </div>
+              </div>
+
+              <!-- Option 1: Auto Frame from Video -->
+              <div class="poster-input-panel" id="panelAutoThumb">
+                <div class="auto-frame-hint">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i> Poster akan otomatis dicuplik dari detik awal video yang kamu pilih.
+                </div>
+              </div>
+
+              <!-- Option 2: Local File Upload -->
+              <div class="poster-input-panel" id="panelLocalImg" style="display:none;">
+                <input type="file" id="posterFileInput" accept="image/*" class="form-input">
+              </div>
+
+              <!-- Option 3: URL Image -->
+              <div class="poster-input-panel" id="panelUrlImg" style="display:none;">
+                <input type="url" id="posterUrlInput" class="form-input" placeholder="https://images.unsplash.com/...">
+              </div>
+
+              <div class="poster-preview-box" id="posterPreviewBox">
+                <span>Preview Sampul / Poster</span>
+              </div>
+            </div>
+
+            <div class="local-storage-notice">
+              <i class="fa-solid fa-shield-halved"></i>
+              <span><strong>Penyimpanan Lokal (Offline):</strong> Film disimpan di penyimpanan browser kamu (IndexedDB). Tidak dikirim ke server/database manapun dan tetap aman.</span>
+            </div>
+          </div>
+
+          <!-- Right: Metadata & Details -->
+          <div class="form-column">
+            <div class="form-group">
+              <label class="form-label" for="uploadTitle">Judul Film <span class="required">*</span></label>
+              <input type="text" id="uploadTitle" class="form-input" placeholder="Contoh: Sang Penjelajah Bintang" required>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="uploadGenre">Genre Utama <span class="required">*</span></label>
+                <select id="uploadGenre" class="form-input" required>
+                  <option value="Sci-Fi">Sci-Fi</option>
+                  <option value="Action">Action</option>
+                  <option value="Drama">Drama</option>
+                  <option value="Animation">Animation</option>
+                  <option value="Cyberpunk">Cyberpunk</option>
+                  <option value="Fantasy">Fantasy</option>
+                  <option value="Horror">Horror</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="uploadYear">Tahun Rilis <span class="required">*</span></label>
+                <input type="number" id="uploadYear" class="form-input" value="2026" min="1950" max="2030" required>
+              </div>
+            </div>
+
+            <div class="form-row-2">
+              <div class="form-group">
+                <label class="form-label" for="uploadDuration">Durasi Film (Menit) <span class="required">*</span></label>
+                <input type="number" id="uploadDuration" class="form-input" placeholder="Contoh: 110" min="1" max="400" required>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="uploadAgeRating">Klasifikasi Usia</label>
+                <select id="uploadAgeRating" class="form-input">
+                  <option value="Semua Umur (SU)">Semua Umur (SU)</option>
+                  <option value="13+">Remaja (13+)</option>
+                  <option value="17+" selected>Dewasa (17+)</option>
+                  <option value="21+">21+</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="uploadDirector">Sutradara / Pembuat Film</label>
+              <input type="text" id="uploadDirector" class="form-input" placeholder="Nama sutradara...">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="uploadSynopsis">Sinopsis / Deskripsi Alur Cerita <span class="required">*</span></label>
+              <textarea id="uploadSynopsis" class="form-input" rows="4" placeholder="Ceritakan gambaran singkat plot film ini secara menarik..." required></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelUploadBtn">Batal</button>
+          <button type="submit" class="btn btn-primary" id="submitUploadBtn">
+            <i class="fa-solid fa-upload"></i> Publikasikan Film
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- SCRIPT -->
+  <script src="app.js"></script>
+</body>
+</html>
